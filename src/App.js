@@ -37,23 +37,32 @@ class App extends Component {
     //  If we are not passing props we can use the component={Component name goes here}
     // line 58: HISTORY we use destructuring to get out from props the history object and we then push the / or index route after the form submit
     return (
-      <div>
-        <Route exact path='/' render={() => (
-          <ListContacts
-            onDeleteContact={this.removeContact}
-            contacts={this.state.contacts}
+      <Router>
+        <Switch>
+          <Route
+            path="/"
+            exact={true}
+            render={() => (
+              <ListContact
+                contactList={contacts}
+                onDeleteContact={this.removeContact}
+              />
+            )}
           />
-        )}/>
-        <Route path='/create' render={({ history }) => (
-          <CreateContact
-            onCreateContact={(contact) => {
-              this.createContact(contact)
-              history.push('/')
-            }}
+          <Route
+            path="/create"
+            render={({ history }) => (
+              <CreateContact
+                onAddContact={(contact) => {
+                  this.addContact(contact);
+                  history.push('/');
+                }}
+              />
+            )}
           />
-        )}/>
-      </div>
-    )
+        </Switch>
+      </Router>
+    );
   }
 }
 
