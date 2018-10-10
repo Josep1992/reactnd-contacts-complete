@@ -1,35 +1,33 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-import ImageInput from './ImageInput'
-import serializeForm from 'form-serialize'
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import ImageInput from './ImageInput';
+import serializeForm from 'form-serialize';
 
 class CreateContact extends Component {
   handleSubmit = (e) => {
-    e.preventDefault()
-    const values = serializeForm(e.target, { hash: true })
-    if (this.props.onCreateContact)
-      this.props.onCreateContact(values)
-  }
-
+    e.preventDefault();
+    const value = serializeForm(e.target, { hash: true });
+    this.props.onAddContact(value);
+  };
   render() {
     return (
-      <div>
-        <Link className='close-create-contact' to='/'>Close</Link>
-        <form onSubmit={this.handleSubmit} className='create-contact-form'>
+      <Fragment>
+        <Link to="/" className="close-create-contact" />
+        <form className="create-contact-form" onSubmit={this.handleSubmit}>
           <ImageInput
-            className='create-contact-avatar-input'
-            name='avatarURL'
+            className="create-contact-avatar-input"
+            name="avatar"
             maxHeight={64}
           />
-          <div className='create-contact-details'>
-            <input type='text' name='name' placeholder='Name'/>
-            <input type='text' name='email' placeholder='Email'/>
-            <button>Add Contact</button>
+          <div className="create-contact-details">
+            <input type="text" placeholder="Name" name="name" />
+            <input type="text" placeholder="Email" name="email" />
+            <button type="submit">Add Contact</button>
           </div>
         </form>
-      </div>
-    )
+      </Fragment>
+    );
   }
 }
 
-export default CreateContact
+export default CreateContact;

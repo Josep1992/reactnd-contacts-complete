@@ -1,35 +1,41 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom'
-import ListContacts from './ListContacts'
-import CreateContact from './CreateContact'
-import * as ContactsAPI from './utils/ContactsAPI'
+import ListContact from './ListContact';
+import CreateContact from './CreateContact';
+import * as ContactsApi from './utils/ContactsAPI';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 class App extends Component {
   state = {
-    contacts: []
-  }
-  componentDidMount() {
-    ContactsAPI.getAll().then((contacts) => {
-      this.setState({ contacts })
-    })
-  }
+    contacts: [],
+  };
+
+  componentDidMount = () => {
+    ContactsApi.getAll().then((data) => this.setState({ contacts: data }));
+  };
+
   removeContact = (contact) => {
-    this.setState((state) => ({
-      contacts: state.contacts.filter((c) => c.id !== contact.id)
-    }))
+    this.setState((state) => {
+      contacts: state.contacts.filter((c) => c.id !== contact.id);
+    });
 
-    ContactsAPI.remove(contact)
-  }
+    ContactsApi.remove(contact);
+  };
 
-  createContact(contact) {
-    ContactsAPI.create(contact).then(contact => {
-      this.setState(state => ({
-        contacts: state.contacts.concat([ contact ])
-      }))
-    })
-  }
+  addContact = (contact) => {
+    ContactsApi.create(contact).then((contact) =>
+      //we use the arrow function method when we add to the previous state...
+      // we can also use the this.seState({object:method})
+      this.setState((state) => {
+        contacts: state.contacts.concat([contact]);
+      }),
+    );
+  };
 
   render() {
+    const { contacts } = this.state;
+    // line 45:We use the render prop method when we want to pass props to the components inside the route
+    //  If we are not passing props we can use the component={Component name goes here}
+    // line 58: HISTORY we use destructuring to get out from props the history object and we then push the / or index route after the form submit
     return (
       <div>
         <Route exact path='/' render={() => (
